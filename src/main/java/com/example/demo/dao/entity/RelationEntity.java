@@ -58,8 +58,8 @@ public class RelationEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     /*@JoinTable(
             name = "REGISTRATION_AGENTCARDHOLDER", schema = "oaspn",
-            joinColumns = @JoinColumn(name = "registration_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "registration_id_fkey")),
-            inverseJoinColumns = @JoinColumn(name = "agent_card_holder", referencedColumnName = "persId", foreignKey = @ForeignKey(name = "agent_card_holder_fkey")))*/
+            joinColumns = @JoinColumn(name = "", referencedColumnName = "", foreignKey = @ForeignKey(name = "")),
+            inverseJoinColumns = @JoinColumn(name = "", referencedColumnName = "", foreignKey = @ForeignKey(name = "")))*/
     private List<WayEntity> ways;
     /**
      * дополнительная информация
