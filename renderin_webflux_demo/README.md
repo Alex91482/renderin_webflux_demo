@@ -16,6 +16,12 @@ postgresql
 ### Пояснение:
 В БД 1 таблица. Объекты - идентификатор, геометрия, цветоопределяющая характеристика
 ```sql
+CREATE TABLE entity (
+id serial NOT NULL,
+geom geometry(linestring, 4326) not null,
+color text not null,
+CONSTRAINT cabels_pkey PRIMARY KEY (id)
+);
 CREATE TABLE line (
 id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 id_osm bigint,

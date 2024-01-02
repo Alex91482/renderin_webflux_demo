@@ -57,4 +57,9 @@ public class MyLineDAOImpl implements MyLineDAO {
     public Flux<MyLine> getMyObjectLimitTen(){
         return myLineRepository.getMyObjectLimitTen();
     }
+
+    @Override
+    public Flux<MyLine> getMyLineByCoordinatePlane(Double maxLat, Double maxLon, Double minLat, Double minLon){
+        return myLineRepository.getMyLineByCoordinatePlane(maxLat, maxLon, minLat, minLon);
+    }
 }

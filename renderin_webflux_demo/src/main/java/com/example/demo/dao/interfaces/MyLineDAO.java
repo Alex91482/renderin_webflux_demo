@@ -12,4 +12,5 @@ public interface MyLineDAO {
     Mono<MyLine> save(MyLine myLine);
     Mono<Void> deleteById(Long id);
     Flux<MyLine> getMyObjectLimitTen();
+    Flux<MyLine> getMyLineByCoordinatePlane(Double maxLat, Double maxLon, Double minLat, Double minLon);
 }
