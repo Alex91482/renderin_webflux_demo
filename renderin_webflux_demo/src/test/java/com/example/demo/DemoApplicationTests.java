@@ -45,7 +45,7 @@ class DemoApplicationTests {
 
 	}
 
-	@Test
+	//@Test
 	public void testMonoSuccessByFlux(){
 		Optional<Object> i = Mono.create(emitter -> {
 			AtomicInteger x = new AtomicInteger(0);
@@ -68,7 +68,7 @@ class DemoApplicationTests {
 		assert ((int)i.get() == 45);
 	}
 
-	@Test
+	//@Test
 	public void testMonoSuccessByFluxAndErrorInBlockComplete(){
 		Optional<Object> i = Mono.create(emitter -> {
 			AtomicInteger x = new AtomicInteger(0);

@@ -155,7 +155,7 @@ public class RenderingServiceImpl implements RenderingService {
 
     /**
      * Резервное изображение на случай возникновения ошибки
-     * @return байтовый массив из заображения с ошибкой
+     * @return байтовый массив из иаображения с ошибкой
      */
     private byte[] getPictureErrorHasOccurred(){
         byte[] bytes = new byte[0];
