@@ -13,18 +13,11 @@ postgresql
 3) Использование ProjectReactor и spring cloud ОБЯЗАТЕЛЬНО
 4) Плюсом будет браузерный веб клиент на основе openlayer или leafleat
 
-### Пояснение:
-В БД 1 таблица. Объекты - идентификатор, геометрия, цветоопределяющая характеристика
-```sql
-CREATE TABLE line (
-id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-id_osm bigint,
-geom geometry(linestring, 4326) not null,
-color text not null
-);
-```
-## Описание
-Для геометрии используется структура и данные из сервиса OpenStreetMap https://www.openstreetmap.org/ 
-- node - точка
-- way - линия
-- relation - это логическое объединение точек, линий и других отношений в единый объект
+### Порядок запуска приложений:
+1) cloud-config
+2) server-registry
+3) renderin_webflux_demo
+
+### Панель Eureka
+Панель будет находится по адресу http://localhost:9002/
+![plot](./images/eureka.png)
