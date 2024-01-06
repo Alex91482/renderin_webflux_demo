@@ -17,25 +17,29 @@ postgresql
 В БД 1 таблица. Объекты - идентификатор, геометрия, цветоопределяющая характеристика
 ```sql
 CREATE TABLE entity (
-id serial NOT NULL,
-geom geometry(linestring, 4326) not null,
-color text not null,
+    id serial NOT NULL,
+    geom geometry(linestring, 4326) not null,
+    color text not null,
 CONSTRAINT cabels_pkey PRIMARY KEY (id)
 );
 CREATE TABLE line (
-id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-id_osm bigint,
-geom geometry(linestring, 4326) not null,
-color text not null
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id_osm bigint,
+    geometry geometry(linestring, 4326),
+    rgb_parameter text not null
 );
 ```
 ```sql
+CREATE TABLE line_test (
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id_osm bigint,
+    geom geometry(linestring, 4326) not null,
+    color text not null
+);
 insert into line_test (id_osm, geom, color) values (22724737,'LINESTRING(30.3072072 59.9488782, 30.3091483 59.9481586)','0,0,225');
 insert into line_test (id_osm, geom, color) values (23553389,'LINESTRING(30.3226257 59.9502601, 30.3222525 59.9505655, 30.3222277 59.9505580)','0,0,225');
 insert into line_test (id_osm, geom, color) values (88391191,'LINESTRING(30.3534598 59.9429722, 30.3534641 59.9429958, 30.3534680 59.9430230)','255,0,0');
 insert into line_test (id_osm, geom, color) values (88391191,'LINESTRING(30.3524817 59.9436478, 30.3533716 59.9436409, 30.3533703 59.9435723, 30.3533681 59.9434564)','255,0,0');
-
-
 
 select ST_Intersects(
 'SRID=4326;LINESTRING(30.3072072 59.9488782, 30.3091483 59.9481586)'::geography ,
@@ -49,6 +53,25 @@ lt.geom ,
 ST_MakeEnvelope(30.30843, 59.94766, 30.32527, 59.95250, 4326)
 );
 ```
+Для заполнения БД можно использовать скритп map_pp_burg.sql  
+Так же в директории test_data есть не обработанные данные в виде файлов osm.  
+Пример запроса для получения изображения:
+```json
+{
+	"width": 1000,
+	"height": 1000,
+	"bbox": {
+		"geoLatMin": "59.94766",
+		"geoLonMin": "30.30843",
+		"geoLatMax": "59.95250",
+		"geoLonMax": "30.32527"
+	}
+}
+```
+Оригинальные данные и то как выглядело изображение:
+![plot](./src/main/resources/images/2.png)
+Изображение полученное с помощью рендеринга:
+![plot](./src/main/resources/images/rendering1.png)
 ## Описание
 Для геометрии используется структура и данные из сервиса OpenStreetMap https://www.openstreetmap.org/ 
 - node - точка

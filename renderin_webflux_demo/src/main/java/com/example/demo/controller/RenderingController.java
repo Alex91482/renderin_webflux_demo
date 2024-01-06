@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.model.RenderingRequest;
 import com.example.demo.services.interfaces.RenderingService;
 import com.example.demo.services.java2drendering.RenderingServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
@@ -24,7 +26,11 @@ public class RenderingController {
     }
 
     @RequestMapping(value = "/rendering", method = RequestMethod.POST)
-    public Mono<byte[]> getRenderingMap(RenderingRequest renderingRequest){
-        return renderingService.getPageByArea(renderingRequest);
+    public Mono<ResponseEntity<Mono<byte[]>>> getRenderingMap(@RequestBody RenderingRequest renderingRequest){
+        return Mono.just(
+                ResponseEntity
+                        .ok()
+                        .body(renderingService.getPageByArea(renderingRequest))
+        );
     }
 }

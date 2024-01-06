@@ -10,7 +10,6 @@ import com.example.demo.dao.pojo.openstreetmap.way.WayNdMaps;
 import jakarta.xml.bind.JAXBContext;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -34,7 +33,7 @@ public class DataInit implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DataInit.class);
 
-    private static final String PATH_TO_RESOURCE = "./src/main/resource/test_data/map_pp_burg.osm";
+    private static final String PATH_TO_RESOURCE  = "./src/main/resources/test_data/map_pp_burg.osm";
     private static final String PATH_TO_RESOURCE1 = "./src/main/resources/test_data/map_v2.osm";
     private static final String PATH_TO_RESOURCE2 = "./src/main/resources/test_data/cathedral.osm";
 
@@ -46,45 +45,11 @@ public class DataInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        String patchToResource = "";
-        if(new File(PATH_TO_RESOURCE).exists()){
-            patchToResource = PATH_TO_RESOURCE;
-        }else if(new File(PATH_TO_RESOURCE1).exists()){
-            patchToResource = PATH_TO_RESOURCE1;
-        }else if(new File(PATH_TO_RESOURCE2).exists()){
-            patchToResource = PATH_TO_RESOURCE2;
-        }
-        OsmMaps osmMaps = new OsmMaps();
-        try(var br = new BufferedReader(new FileReader(patchToResource))) {
-            var body = br.lines().collect(Collectors.joining());
-            var reader = new StringReader(body);
-            var context = JAXBContext.newInstance(OsmMaps.class);
-            var unmarshaller = context.createUnmarshaller();
-            osmMaps = (OsmMaps) unmarshaller.unmarshal(reader);
-        }catch (Exception e){
-            logger.error("Exception on creation OsmMaps: {}", e.getMessage());
-            e.printStackTrace();
-        }
-        var nodeList = new ArrayList<NodeMaps>(osmMaps.getNodes());
-        var wayMaps = osmMaps.getWays().get(0);
-        final List<Long> nodeId = wayMaps.getNds().stream().map(WayNdMaps::getRef).toList();
-        var nodes = nodeId.stream().map(nodeId1 -> {
-                    NodeMaps nodeMaps1 = null;
-                    for (NodeMaps nodeMaps2 : nodeList) {
-                        if (Objects.equals(nodeMaps2.getId(), nodeId1)) {
-                            nodeMaps1 = nodeMaps2;
-                            break;
-                        }
-                    }
-                    return nodeMaps1;
-                })
-                .filter(Objects::nonNull)
-                .toList();
-        var myLine = myLineConverter(wayMaps, nodes);
-        myObjectsDAO.save(myLine).subscribe();
+        //start1();
+    }
 
-
-        /*dbFill().subscribe(
+    private void start1(){
+        dbFill().subscribe(
                 next -> {
                     if(next){
                         logger.info("Data initialization complete");
@@ -95,7 +60,7 @@ public class DataInit implements ApplicationRunner {
                 error -> {
                     logger.error("An exception occurred during data initialization: {}", error.getMessage());
                 }
-        );*/
+        );
     }
 
     public Mono<Boolean> dbFill(){
@@ -114,7 +79,8 @@ public class DataInit implements ApplicationRunner {
                     }else{
                         return Mono.create(emitter -> {
                             var osmMaps = osmResult.get();
-                            readOsrm((OsmMaps) osmMaps).map(myObjectsDAO::save)
+                            readOsrm((OsmMaps) osmMaps)
+                                    .map(myObjectsDAO::save)
                                     .subscribe(
                                             Mono::subscribe,
                                             error -> logger.error("Error in section init data: {}", error.getMessage()),
@@ -139,6 +105,7 @@ public class DataInit implements ApplicationRunner {
             }else if(new File(PATH_TO_RESOURCE2).exists()){
                 patchToResource = PATH_TO_RESOURCE2;
             }
+            logger.info("Patch to resource: {}", patchToResource);
             try(var br = new BufferedReader(new FileReader(patchToResource))) {
                 var body = br.lines().collect(Collectors.joining());
                 var reader = new StringReader(body);
@@ -203,7 +170,6 @@ public class DataInit implements ApplicationRunner {
         var lineString = geometryFactory.createLineString(coordinateArrayList.toArray(Coordinate[]::new));
 
         var myLine = new MyLine();
-        myLine.setId(wayMaps.getId());
         myLine.setRgbParameter("0,0,225");
         myLine.setId_osm(wayMaps.getId());
         myLine.setGeometry(lineString);

@@ -35,7 +35,7 @@ public class RenderingServiceImpl implements RenderingService {
         //отрисовать изображение
         //вернуть в виде картинки
         if(renderingRequest.getWidth() == null || renderingRequest.getHeight() == null){
-            return Mono.empty();
+            return Mono.just(getPictureErrorHasOccurred());
         }
         final Double maxLat = renderingRequest.getBbox().getGeoLatMax();
         final Double maxLon = renderingRequest.getBbox().getGeoLonMax();
@@ -60,7 +60,6 @@ public class RenderingServiceImpl implements RenderingService {
                                 value -> {
                                     var coordinates = value.getGeometry().getCoordinates();
                                     var color = getColor(value.getRgbParameter());
-
                                     g2d.setColor(color);
 
                                     int x1 = -1;
@@ -165,7 +164,7 @@ public class RenderingServiceImpl implements RenderingService {
             ImageIO.write(bImage, "png", bos );
             bytes = bos.toByteArray();
         }catch (Exception e){
-            logger.error(" {}", e.getMessage());
+            logger.error("Exception when reading default image: {}", e.getMessage());
             e.printStackTrace();
         }
         return bytes;

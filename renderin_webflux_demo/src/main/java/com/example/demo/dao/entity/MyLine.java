@@ -6,15 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "line")
 public class MyLine {
 
     @Id
@@ -31,6 +32,16 @@ public class MyLine {
      * цветоопределяющая характеристика
      */
     private String rgbParameter;
+
+    @Override
+    public String toString() {
+        return "MyLine{" +
+                "id=" + id +
+                ", id_osm=" + id_osm +
+                ", geometry=" + geometry.toString() +
+                ", rgbParameter='" + rgbParameter + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

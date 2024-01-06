@@ -13,7 +13,7 @@ import static org.springframework.web.reactive.function.BodyExtractors.toMono;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
-@Configuration
+//@Configuration
 public class FunctionalController {
 
     private final RenderingService renderingService;
@@ -22,7 +22,7 @@ public class FunctionalController {
         this.renderingService = renderingService;
     }
 
-    @Bean
+    //@Bean
     public RouterFunction<ServerResponse> getRenderingMap(){
         return route(POST("/rendering"), request ->
             request.body(toMono(RenderingRequest.class))
